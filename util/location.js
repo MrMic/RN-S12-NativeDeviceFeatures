@@ -1,6 +1,5 @@
-import { GOOGLE_API_KEY } from "@env";
 
-
+const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 console.log("🪚 GOOGLE_API_KEY:", GOOGLE_API_KEY);
 
 export function getMapPreview(lat, lng) {
