@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 
 import { Colors } from "../../constants/colors";
-import { getMapPreview } from "../../util/location";
+import { getAddress, getMapPreview } from "../../util/location";
 import OutlinedButton from "../UI/OutlinedButton";
 
 function LocationPicker({ onPickLocation }) {
@@ -21,7 +21,7 @@ function LocationPicker({ onPickLocation }) {
   const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
 
 
-  //* INFO: useEffect ______________________________________________________________________
+  //* WARN: useEffect ______________________________________________________________________
   useEffect(() => {
     if (isFocused && route.params) {
       const mapPickedLocation = {
@@ -32,9 +32,16 @@ function LocationPicker({ onPickLocation }) {
     }
   }, [route, isFocused]);
 
-  // * INFO: useEffect ______________________________________________________________________
+  // * WARN: useEffect ______________________________________________________________________
   useEffect(() => {
-    onPickLocation(pickedLocation)
+    async function handleLocation() {
+      if (pickedLocation) {
+        const address = await getAddress(pickedLocation.lat, pickedLocation.lng);
+        onPickLocation({ ...pickedLocation, address: address });
+      }
+    }
+
+    handleLocation();
   }, [pickedLocation, onPickLocation]);
 
   // ______________________________________________________________________
