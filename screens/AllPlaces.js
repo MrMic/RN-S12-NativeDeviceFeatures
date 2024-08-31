@@ -2,22 +2,29 @@ import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 
 import PlacesList from "../components/Places/PlacesList";
+import { fetchPlaces } from "../util/database";
 
-function AllPlaces({ route }) {
-  const [loadedPlaces, setLoadedPlaces] = useState([]);
+function AllPlaces( { route } ) {
+  const [ loadedPlaces, setLoadedPlaces ] = useState( [] );
 
   // * HACK: HOOKS  ______________________________________________________________________
-  const isFocused = useIsFocused([]);
+  const isFocused = useIsFocused( [] );
 
-  useEffect(() => {
-    if (isFocused && route.params) {
-      setLoadedPlaces(curPlaces => [...curPlaces, route.params.place]);
+  useEffect( () => {
+    async function loadPlaces() {
+      // const places = await fetchPlaces();
+      const places = await fetchPlaces();
+      setLoadedPlaces( places );
     }
-  }, [isFocused, route.params]);
 
+    if ( isFocused ) {
+      loadPlaces();
+      // setLoadedPlaces( curPlaces => [ ...curPlaces, route.params.place ] );
+    }
+  }, [ isFocused ] );
 
   return (
-    <PlacesList places={loadedPlaces} />
+    <PlacesList places={ loadedPlaces } />
   )
 }
 
