@@ -6,9 +6,7 @@ function AddPlace({ navigation }) {
     // * TODO: Insert place into DB on the phone
     await insertPlace(place);
 
-    navigation.navigate("AllPlaces", {
-      place: place
-    });
+    navigation.navigate("AllPlaces");
   }
 
   return (
