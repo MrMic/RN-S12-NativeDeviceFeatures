@@ -3,21 +3,21 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { Colors } from "../../constants/colors";
 
-function OutlinedButton({ children, icon, onPress }) {
+export function OutlinedButton( { children, icon, onPress } ) {
   return (
-    <View style={styles.buttonOuterContainer}>
+    <View style={ styles.buttonOuterContainer }>
       <Pressable
-        onPress={onPress}
-        style={({ pressed }) => [styles.button, pressed && styles.pressed]}
-        android_ripple={{ color: Colors.primary500 }}
+        onPress={ onPress }
+        style={ ( { pressed } ) => [ styles.button, pressed && styles.pressed ] }
+        android_ripple={ { color: Colors.primary500 } }
       >
         <Ionicons
-          style={styles.icon}
-          name={icon}
-          size={18}
-          color={Colors.primary500}
+          style={ styles.icon }
+          name={ icon }
+          size={ 18 }
+          color={ Colors.primary500 }
         />
-        <Text style={styles.text}>{children}</Text>
+        <Text style={ styles.text }>{ children }</Text>
       </Pressable>
     </View>
   );
@@ -26,7 +26,7 @@ function OutlinedButton({ children, icon, onPress }) {
 export default OutlinedButton;
 
 // ______________________________________________________________________
-const styles = StyleSheet.create({
+const styles = StyleSheet.create( {
   button: {
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.primary500,
   },
-});
+} );
