@@ -2,11 +2,11 @@ import * as SQLite from 'expo-sqlite';
 
 import { Place } from '../models/place';
 
-const database = SQLite.openDatabaseSync( 'places.db' );
+const database = SQLite.openDatabaseSync('places.db');
 
 // ______________________________________________________________________
 export function init() {
-    return database.withTransactionSync( () => {
+    return database.withTransactionSync(() => {
         database.runSync(
             `CREATE TABLE IF NOT EXISTS places (
                 id INTEGER PRIMARY KEY NOT NULL, 
@@ -17,13 +17,13 @@ export function init() {
                 lng REAL NOT NULL
             )`
         );
-    } );
+    });
 }
 
 // ______________________________________________________________________
-export async function insertPlace( place ) {
-    await database.withTransactionAsync( () => {
-        console.log( '🪚 place: ', place );
+export async function insertPlace(place) {
+    await database.withTransactionAsync(() => {
+        console.log('🪚 place: ', place);
         try {
             const result = database.runSync(
                 `INSERT INTO places(title, imageUri, address, lat, lng) VALUES(?, ?, ?, ?, ?)`,
@@ -35,19 +35,19 @@ export async function insertPlace( place ) {
                     place.location.lng,
                 ]
             );
-            console.log( '🪚 result:', result );
-        } catch ( error ) {
-            console.log( error );
+            console.log('🪚 result:', result);
+        } catch (error) {
+            console.log(error);
         }
-    } );
+    });
 }
 
 // ______________________________________________________________________
 export const fetchPlaces = async () => {
     const placesArray = [];
-    const places = await database.getAllAsync( 'SELECT * FROM places' );
-    console.log( '🪚 places', places );
-    places.forEach( place =>
+    const places = await database.getAllAsync('SELECT * FROM places');
+    console.log('🪚 places', places);
+    places.forEach(place =>
         placesArray.push(
             new Place(
                 place.title,
@@ -69,8 +69,9 @@ export const fetchPlaceDetails = async id => {
     const stmt = await database.prepareAsync(
         'SELECT * FROM places WHERE id = $id'
     );
-    const result = await stmt.executeAsync( { $id: id } );
+    const result = await stmt.executeAsync({ $id: id });
     const firstRow = await result.getFirstAsync();
+    // console.log("🪚 firstRow:", firstRow);
     await result.resetAsync();
     return firstRow;
 };

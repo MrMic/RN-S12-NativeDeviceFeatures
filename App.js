@@ -18,41 +18,41 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   // * INFO: HOOKS _____________________________________________________________
-  const [ dbInitialized, setDbInitialized ] = useState( false );
+  const [dbInitialized, setDbInitialized] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     const prepare = async () => {
       try {
         await SplashScreen.preventAutoHideAsync();
         init();
-      } catch ( e ) {
-        console.warn( e );
+      } catch (e) {
+        console.warn(e);
       } finally {
-        setDbInitialized( true );
+        setDbInitialized(true);
       }
     };
     prepare();
-  }, [] );
+  }, []);
 
   const onLayoutRootView = useCallback(
     async () => {
-      if ( dbInitialized ) {
+      if (dbInitialized) {
         await SplashScreen.hideAsync();
       }
     },
-    [ dbInitialized ]
+    [dbInitialized]
   );
 
-  if ( !dbInitialized ) {
+  if (!dbInitialized) {
     return null;
   }
 
   return (
     <>
       <StatusBar style="dark" />
-      <NavigationContainer onReady={ onLayoutRootView }>
+      <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
-          screenOptions={ {
+          screenOptions={{
             headerStyle: {
               backgroundColor: Colors.primary500,
             },
@@ -60,27 +60,31 @@ export default function App() {
             contentStyle: {
               backgroundColor: Colors.gray700,
             },
-          } }
+          }}
         >
-          <Stack.Screen name="AllPlaces" component={ AllPlaces } options={ ( { navigation } ) => ( {
+          <Stack.Screen name="AllPlaces" component={AllPlaces} options={({ navigation }) => ({
             title: 'Your Favorite Places',
-            headerRight: ( { tintColor } ) => (
+            headerRight: ({ tintColor }) => (
               <IconButton
                 icon="add"
-                size={ 24 }
-                color={ tintColor }
-                onPress={ () => navigation.navigate( "AddPlace" ) }
+                size={24}
+                color={tintColor}
+                onPress={() => navigation.navigate("AddPlace")}
               />
             ),
-          } ) }
+          })}
           />
           < Stack.Screen
             name="AddPlace"
-            component={ AddPlace }
-            options={ { title: "Add a new place" } }
+            component={AddPlace}
+            options={{ title: "Add a new place" }}
           />
-          <Stack.Screen name="Map" component={ Map } />
-          <Stack.Screen name="PlaceDetails" component={ PlaceDetails } />
+          <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen
+            name="PlaceDetails"
+            component={PlaceDetails}
+            onOptions={{ title: "Loading..." }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
