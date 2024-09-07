@@ -1,18 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect, useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useEffect, useState } from "react";
 
-import AllPlaces from './screens/AllPlaces';
-import AddPlace from './screens/AddPlace';
-import Map from './screens/Map';
-import PlaceDetails from './screens/PlaceDetails';
+import AllPlaces from "./screens/AllPlaces";
+import AddPlace from "./screens/AddPlace";
+import Map from "./screens/Map";
+import PlaceDetails from "./screens/PlaceDetails";
 
-import IconButton from './components/UI/IconButton';
-import { Colors } from './constants/colors';
-import { init } from './util/database';
-
+import IconButton from "./components/UI/IconButton";
+import { Colors } from "./constants/colors";
+import { init } from "./util/database";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,14 +33,11 @@ export default function App() {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(
-    async () => {
-      if (dbInitialized) {
-        await SplashScreen.hideAsync();
-      }
-    },
-    [dbInitialized]
-  );
+  const onLayoutRootView = useCallback(async () => {
+    if (dbInitialized) {
+      await SplashScreen.hideAsync();
+    }
+  }, [dbInitialized]);
 
   if (!dbInitialized) {
     return null;
@@ -62,19 +58,22 @@ export default function App() {
             },
           }}
         >
-          <Stack.Screen name="AllPlaces" component={AllPlaces} options={({ navigation }) => ({
-            title: 'Your Favorite Places',
-            headerRight: ({ tintColor }) => (
-              <IconButton
-                icon="add"
-                size={24}
-                color={tintColor}
-                onPress={() => navigation.navigate("AddPlace")}
-              />
-            ),
-          })}
+          <Stack.Screen
+            name="AllPlaces"
+            component={AllPlaces}
+            options={({ navigation }) => ({
+              title: "Your Favorite Places",
+              headerRight: ({ tintColor }) => (
+                <IconButton
+                  icon="add"
+                  size={24}
+                  color={tintColor}
+                  onPress={() => navigation.navigate("AddPlace")}
+                />
+              ),
+            })}
           />
-          < Stack.Screen
+          <Stack.Screen
             name="AddPlace"
             component={AddPlace}
             options={{ title: "Add a new place" }}
@@ -90,4 +89,3 @@ export default function App() {
     </>
   );
 }
-

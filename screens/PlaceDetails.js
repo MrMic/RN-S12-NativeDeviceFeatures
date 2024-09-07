@@ -1,14 +1,19 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
-import OutlinedButton from "../components/UI/OutlinedButton"
-import { Colors } from "../constants/colors"
+import OutlinedButton from "../components/UI/OutlinedButton";
+import { Colors } from "../constants/colors";
 import { fetchPlaceDetails } from "../util/database";
 
 function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
 
-  function showOnMapHandler() { }
+  function showOnMapHandler() {
+    navigation.navigate("Map", {
+      initialLat: fetchedPlace.location.lat,
+      initialLng: fetchedPlace.location.lng,
+    });
+  }
 
   const selectedPlaceId = route.params.placeId;
 
@@ -28,21 +33,25 @@ function PlaceDetails({ route, navigation }) {
       <View style={styles.fallback}>
         <Text>Loading place data...</Text>
       </View>
-    )
+    );
   }
 
-  return <ScrollView>
-    <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
-    <View style={styles.locationContainer}>
-      <View style={styles.addressContainer}>
-        <Text style={styles.address}>{fetchedPlace.address}</Text>
+  return (
+    <ScrollView>
+      <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
+      <View style={styles.locationContainer}>
+        <View style={styles.addressContainer}>
+          <Text style={styles.address}>{fetchedPlace.address}</Text>
+        </View>
+        <OutlinedButton icon={"map"} onPress={showOnMapHandler}>
+          View on map
+        </OutlinedButton>
       </View>
-      <OutlinedButton icon={"map"} onPress={showOnMapHandler}>View on map</OutlinedButton>
-    </View>
-  </ScrollView>
+    </ScrollView>
+  );
 }
 
-export default PlaceDetails
+export default PlaceDetails;
 
 const styles = StyleSheet.create({
   fallback: {
@@ -68,4 +77,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-})
+});
